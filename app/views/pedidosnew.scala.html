@@ -1,0 +1,40 @@
+@(header: String, pedidoForm: Form[Pedido])(implicit request: RequestHeader, messages: Messages, session: play.api.mvc.Session)
+
+
+@import helper._
+@import b4.vertical.fieldConstructor
+
+@main("Pedidos - " + header) {
+<div class="container">
+@request.flash.get("globalError")
+
+@pedidoForm.globalError.map{error =>
+    <h3>@error.message</h3>
+    }
+    @request.flash.data.map{ case (tipo, msg) =>
+    <div class="alert alert-@tipo">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>@msg</strong>
+    </div>
+    }
+
+ <h1 id="vertical-form" class="page-header">@header</h1>
+    @b4.form(action = routes.PedidosCRUD.doNewPedido()) {
+
+      @helper.CSRF.formField
+      @helper.inputText(pedidoForm("ra"), '_label -> "RA")
+      @helper.inputText(pedidoForm("nome"), '_label -> "Nome")
+      @helper.inputText(pedidoForm("pedido"), '_label -> "Pedido")
+      @helper.inputText(pedidoForm("status"), '_label -> "Status")
+
+
+      <button class="btn btn-success"><i class="fa fa-plus fa-lg" aria-hidden="true"></i> Adicionar</button>
+    }
+      <br />
+      <a href="@routes.PedidosCRUD.list()">
+      <button class="btn btn-default btn-info"><i class="fa fa-chevron-left"></i> Voltar</button>
+      </a>
+
+
+</div>
+}

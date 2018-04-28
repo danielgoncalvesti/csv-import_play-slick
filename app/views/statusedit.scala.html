@@ -1,0 +1,23 @@
+@(header: String, updateForm: Form[(String, String)] )(implicit request: RequestHeader, messages: Messages, session: play.api.mvc.Session)
+
+@import helper._
+@import b4.vertical.fieldConstructor
+
+@main("Pedidos") {
+<div class="container">
+ <h1 id="vertical-form" class="page-header">@header</h1>
+     @b4.form(action = routes.PedidosCRUD.doEditStatusLote()) {
+     @helper.CSRF.formField
+
+
+     @helper.inputText(updateForm("numLote"), '_label -> "Número do Lote")
+     @helper.inputText(updateForm("newStatus"), '_label -> "Novo Status do Lote")
+
+     <button class="btn btn-success"><i class="fa fa-plus fa-lg" aria-hidden="true"></i> Alterar</button>
+
+     }
+      <br /><a href="@routes.PedidosCRUD.list()" ><button class="btn btn-default btn-info">
+      <i class="fa fa-chevron-left"></i> Voltar
+       </button></a><br />
+</div>
+}

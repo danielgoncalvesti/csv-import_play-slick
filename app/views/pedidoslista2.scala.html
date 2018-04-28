@@ -1,0 +1,231 @@
+@(header: String, pedidos: Option[Vector[(Long, String, String, String, String, Int)]], numLote: String, distPedidos: Vector[(String, Int)], page: String, searchPedidoForm : Form[String], search: String)(implicit request: RequestHeader, messages: Messages, session: play.api.mvc.Session)
+
+
+@import helper._
+@import b4.inline.fieldConstructor
+
+@main("Lista de Pedidos") {
+
+
+    <section class="section">
+      <div class="container">
+
+    <h1>@header</h1><br />
+    @request.flash.data.map{ case (tipo, msg) =>
+    <div class="alert alert-@tipo">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong>@msg</strong>
+    </div>
+    }
+
+    <!-- Pesquisar Pedido Pelo <strong> RA </strong>  ou <strong>NOME</strong>:<br /> -->
+
+    @b4.form(action = routes.PedidosCRUD.list()) {
+
+      @helper.CSRF.formField
+      @helper.inputText(searchPedidoForm("search"), '_label -> "", '_help -> "", 'placeholder -> "Digite o RA ou Nome" )
+
+
+      <button class="btn btn-success"><i class="fa fa-search fa-lg" aria-hidden="true"></i></button>
+    }
+    <br />
+
+
+    <!-- <input type="text" name="searchPedido"><button type="button">Pesquisar</button><br /> -->
+    <!-- <br /> -->
+
+    <a href="@routes.PedidosCRUD.newPedido()" class="btn btn-success btn-menuprincipal" title="Adicionar">
+     <i class="fa fa-user-plus" aria-hidden="true"></i>
+    </a>
+    <a href="@routes.PedidosCRUD.lote()" class="btn btn-success btn-menuprincipal" title="Enviar Lote">
+    <i class="fa fa-users" aria-hidden="true"></i> Enviar Lote</a>
+    <a href="@routes.PedidosCRUD.editStatusLote" class="btn btn-info btn-menuprincipal" title="Alterar Status do Lote">Alterar Status do Lote</a>
+
+     <a class="deleteAll" title="Deletar Selecionados"><button class="btn btn-danger btn-menuprincipal" id="buttonDelete">
+
+       <i class="fa fa-trash-o fa-lg"></i>
+        </button></a><br /> Filtar pelo nº do Lote:        @if(numLote == ""){
+         <a href="@routes.PedidosCRUD.list()" title="TODOS" class="badge badge-default active">TODOS (@distPedidos.map(a => a._2).sum)</a>
+         }else{
+         <a href="@routes.PedidosCRUD.list()" title="TODOS" class="badge badge-default">TODOS (@distPedidos.map(a => a._2).sum)</a>
+       }
+
+       @distPedidos.map{ case(d, c) => <a href="@routes.PedidosCRUD.list(d)" title="Quantidade: @c" class="badge badge-default @if(d == numLote){active}">@d (@c)</a> }
+
+
+    <br />
+    <table class="table table-bordered fixed">
+        <thead class="thead-default">
+            <tr class="table-active">
+                <th class="text-center"><input type="checkbox" name="check" id="checkAll" value="p.id.get"</th>
+              @*    <th>ID</th> *@
+                <th>RA</th>
+                <th style="width:50%">Nome</th>
+                <th class="text-center">NºLote</th>
+                <th>Obs</th>
+                <th style="width:20%">Status</th>
+                <th style="width:10%">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+          @if(pedidos != None){
+            @pedidos.get.map {
+                case (p) => {
+                <tr id="@p._1">
+                    <td class="text-center checkpedido">
+                        <input type="checkbox" name="id" class="selectItem" value="@p._1"><br>
+                    </td>
+                 @*     <td>@p._1</td> *@
+                    <td>@p._2</td>
+                    <td style="width:50%">@p._3</td>
+                    <td>@p._4</td>
+                    @if(p._6>1){
+                        <td colspan="1" class="bg-danger text-white text-center">Duplicado (RA)</td>
+                    } else {
+                      <td colspan="1">Único</td>
+                    }
+                    <td style="width:20%">@p._5</td>
+                    <td class="text-center">
+                    <a class="btn btn-info btn-sm" href="@routes.PedidosCRUD.editPedido(p._1)" title="Editar">
+                        <i class="fa fa-pencil fa-fw"></i></a>
+                   <button onclick="deletePedido(@p._1)" class="delete btn btn-danger btn-sm"><i class="fa fa-trash-o fa-lg"></i></button>
+            @*       <a class="btn btn-danger btn-sm" href="@routes.PedidosCRUD.doDelete(p.id.get,numLote)" title="Remover">
+                        <i class="fa fa-trash-o fa-lg"></i></a> *@
+                    </td>
+                </tr>
+              }
+            }
+          }
+        </tbody>
+    </table>
+    @if(search == ""){
+      <nav aria-label="...">
+        <ul class="pagination justify-content-center">
+
+          @if(numLote == ""){
+
+            @for(index <- 1 until ((distPedidos.map(a => a._2).sum)/50)+2) {
+              <li class="page-item @if(page.toInt == index){active}"><a class="page-link" href="list?filter=@numLote&page=@index">@index</a></li>
+            }
+          }
+          @if(numLote != ""){
+            @if((distPedidos.filter(x => x._1 == numLote).map(x=> x._2).sum/50)+1 > 1){
+              @for(index <- 1 until  (distPedidos.filter(x => x._1 == numLote).map(x=> x._2).sum/50)+2) {
+                <li class="page-item @if(page.toInt == index){active}"><a class="page-link" href="list?filter=@numLote&page=@index">@index</a></li>
+              }
+            }
+
+          }
+        </ul>
+      </nav>
+    }
+
+    <br />
+
+    @helper.javascriptRouter("myRoutes")(
+      routes.javascript.PedidosCRUD.delete,
+      routes.javascript.PedidosCRUD.doDeleteAll
+    )
+
+    <script>
+      var jsonObj = [];
+     // var valores;
+    //  item = {}
+  //    item[""] = 'complement';
+     // jsonObj.push(item);
+
+      $("#checkAll").click(function(){
+         $('input:checkbox').not(this).prop('checked', this.checked);
+         var arraydevalores = $('input:checkbox').not("#checkAll").filter(':checked').map(function(){
+            return this.defaultValue;
+         }).get();
+
+    /*     if(arraydevalores.length > 0){
+           $('#buttonDelete').prop('disabled', false);
+         } else{
+           $('#buttonDelete').prop('disabled', true);
+         }*/
+
+      });
+
+  /*    $('.selectItem').click(function(){
+        var arraydevalores = $('input:checkbox').not("#checkAll").filter(':checked').map(function(){
+            return this.defaultValue;
+         }).get();
+
+         if(arraydevalores.length > 0){
+           $('#buttonDelete').prop('disabled', false);
+         } else{
+           $('#buttonDelete').prop('disabled', true);
+         }
+      }); */
+
+      $(".deleteAll").click(function(){
+        var arraydevalores = $('input:checkbox').not("#checkAll").filter(':checked').map(function(){
+            return this.defaultValue;
+         }).get();
+       //  var arraydevalores = arraydevalores.toString().replace(/,/g, '-');
+         var $this = arraydevalores;
+       //  console.log(arraydevalores);
+         jsonObj.push(arraydevalores);
+         myRoutes.controllers.PedidosCRUD.doDeleteAll().ajax({
+          data : JSON.stringify(jsonObj),
+          contentType : 'application/json',
+           success: function(data) {
+            /* console.log(data)*/
+             $.each(data, function(index){
+               /*console.log(data[index] + " -  "+index);*/
+              $('#'+data[index]).remove();
+             });
+             window.location.reload();
+
+           }
+         });
+
+  /*       $.ajax({
+            type: "GET",
+            dataType: 'text/plain',
+            data: JSON.stringify(arraydevalores),
+            url : "/admin/delete/all?arraydevalores="+arraydevalores
+
+         });     */
+       });
+
+
+  /*  $(".delete").on('click', function(){
+     console.log($(this).parent().parent().parent());
+     $(this).parent().parent().remove();
+    });  */
+
+    function deletePedido(id) {
+       myRoutes.controllers.PedidosCRUD.delete(id).ajax({
+         success: function(data) {
+            $('#'+id).closest('tr')
+        .children('td')
+        .animate({ padding: 0 })
+        .wrapInner('<div />')
+        .children()
+        .slideUp("slow", function() { $(this).closest('tr').remove();
+
+        });
+
+           //alert(data);
+            //$('#'+id).slideUp( "slow");
+
+
+           //   $('#'+id).remove();
+
+       //    $('#'+id).remove();
+           /*window.location.reload();*/
+           /*$(this).parent().parent().parent().remove();*/
+
+
+         }
+       });
+     }
+
+
+    </script>
+</div>
+</section>
+}

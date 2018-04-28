@@ -1,0 +1,27 @@
+@(header: String, pedidoForm: Form[Pedido], id: Long)(implicit request: RequestHeader, messages: Messages, session: play.api.mvc.Session)
+
+
+@import helper._
+@import b4.vertical.fieldConstructor
+
+@main("Pedidos - " + header) {
+<div class="container">
+<h1 id="vertical-form" class="page-header">@header</h1>
+    @b4.form(action = routes.PedidosCRUD.doEditPedido(id)) {
+
+      @helper.CSRF.formField
+      @helper.inputText(pedidoForm("ra"), '_label -> "RA", 'readonly -> "readonly")
+      @helper.inputText(pedidoForm("nome"), '_label -> "Nome")
+      @helper.inputText(pedidoForm("pedido"), '_label -> "Pedido")
+      @helper.inputText(pedidoForm("status"), '_label -> "Status")
+
+
+      <button class="btn btn-success"><i class="fa fa-pencil fa-fw"></i> Editar</button>
+
+
+    }
+      <br /> <a href="@routes.PedidosCRUD.list()">
+      <button class="btn btn-default btn-info"><i class="fa fa-chevron-left"></i> Voltar</button>
+      </a>
+</div>
+}

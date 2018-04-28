@@ -1,0 +1,186 @@
+#numeroRA_field .form-control {
+      font-size: 1.5rem;
+}
+dd.error{
+  color: red;
+}
+
+a.badge-default{
+ background-color: #636c72;
+}
+a.badge-default.active{
+   background-color: #4b5257;
+}
+
+button.pesquisar-ra{
+background-color: #168a5c;
+    border-color: #168a5c;
+  border-width: 1px;
+}
+button.pesquisar-ra:active, button.pesquisar-ra:hover {
+ background-color: #0f5a3c;
+}
+.form-control:focus{
+  border-color: #3c763d;
+}
+
+.nenhumregistro {
+    background-color: rgba(14, 90, 60, 0.13);
+    border-color: #3c763d;
+    color: #3c763d;
+}
+
+button.pesquisar-ra:focus{
+   box-shadow: 0 0 0 2px rgba(220, 202, 0, 0.89);
+}
+
+label.form-control-label{
+ display:none;
+}
+
+/* HEADER */
+
+div.header-main h2{
+ color: #0f5a3c;
+}
+
+h3.text-title-consulta{
+ font-weight: 400;
+}
+
+footer.footer{
+
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+  /*  background-color: #0e5a3c; */
+  /*    background:linear-gradient(180deg, #0f5a3c, transparent), linear-gradient(#fff, transparent 100%); */
+  /* fallback */
+  background-color: #1a82f7;
+  background-repeat: repeat-x;
+
+  /* Safari 4-5, Chrome 1-9 */
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(14, 90, 60, 0.7)), to(#2F2727));
+
+  /* Safari 5.1, Chrome 10+ */
+  background: -webkit-linear-gradient(top, rgba(14, 90, 60, 0.7), #2F2726);
+
+  /* Firefox 3.6+ */
+  background: -moz-linear-gradient(top, rgba(14, 90, 60, 0.7), #2F2727);
+
+  /* IE 10 */
+  background: -ms-linear-gradient(top, rgba(14, 90, 60, 0.7), #2F2727);
+
+  /* Opera 11.10+ */
+  background: -o-linear-gradient(top, rgba(14, 90, 60, 0.7), #2F2727);
+}
+img.footer-ico{
+   margin-top: -3px;
+}
+
+div.principal{
+ margin-top: 40px;
+}
+
+div.login {
+ background-color: rgba(15, 90, 60, 0.09);
+ border-color: #0f5a3c;
+ color: #0f5a3c;
+}
+
+input.btn-login{
+ background-color: #168a5c;
+ border-color: #168a5c;
+}
+
+input.btn-login:hover{
+ background-color:#0f5a3c;
+ box-shadow: 0 0 0 2px rgba(220, 202, 0, 0.89);
+}
+input.btn-login:focus{
+ background-color:#0f5a3c;
+ box-shadow: 0 0 0 2px rgba(220, 202, 0, 0.89);
+}
+
+input.btn-login:active{
+  background-color:#0f5a3c;
+}
+#footer{
+ background-color:#0f5a3c;
+ margin-top: 120px;
+ height: 60px;
+ line-height: 60px;
+ background-repeat: repeat-x;
+ background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(rgba(14, 90, 60, 0.7)), to(#2F2727));
+ background: -webkit-linear-gradient(top, rgba(14, 90, 60, 0.7), #2F2726);
+ background: -moz-linear-gradient(top, rgba(14, 90, 60, 0.7), #2F2727);
+ background: -ms-linear-gradient(top, rgba(14, 90, 60, 0.7), #2F2727);
+ background: -o-linear-gradient(top, rgba(14, 90, 60, 0.7), #2F2727);
+}
+
+form.form-signin {
+ padding-top: 50px;
+ padding-bottom:50px;
+ margin-bottom: 100px;
+}
+
+section.section{
+ margin-top: 20px;
+}
+div.consulta .table-responsive{
+ margin-bottom: 400px;
+}
+
+ul.pagination{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-left: -1px;
+}
+
+dd input#search{
+  height: 38px;
+}
+
+dl#search_field,
+dl#search_field dd,
+dl#search_field dd.info{
+  margin-bottom: 0px;
+}
+
+dl#search_field{
+  padding: 0px 3px 0px 0px;
+}
+
+dl#search_field label{
+  display: none;
+}
+
+input#search {
+ font-size: 120%;
+}
+
+.btn-menuprincipal{
+ margin-bottom: 3px;
+}
+
+@media (max-width:990px) and{
+  .dropdown-menu {
+   left:220px;
+  }
+}
+
+@media (max-width:414px){
+  .dropdown-menu {
+   left:220px;
+  }
+}
+
+@media (max-width:375px){
+  .dropdown-menu {
+   left:180px;
+  }
+}
+

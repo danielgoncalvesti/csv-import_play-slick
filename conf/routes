@@ -1,0 +1,35 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# An example controller showing a sample home page
+#GET     /                           controllers.HomeController.index
+
+# Não Autenticado
+
+# Autenticado
+GET     /                 controllers.PedidosCRUD.list(filter ?= "", page ?= "1", search ?= "")
+
+GET     /lote                 controllers.PedidosCRUD.lote
+POST    /lote                 controllers.PedidosCRUD.doLote
+GET     /edit/:id             controllers.PedidosCRUD.editPedido(id: Long)
+POST    /edit/:id             controllers.PedidosCRUD.doEditPedido(id: Long)
+GET     /new                  controllers.PedidosCRUD.newPedido()
+POST    /new                  controllers.PedidosCRUD.doNewPedido()
+GET     /delete1/:id          controllers.PedidosCRUD.doDelete(id: Long, numLote: String)
+#GET    /delete/all           controllers.PedidosCRUD.doDeleteAll(arraydevalores: String)
+POST    /delete/all           controllers.PedidosCRUD.doDeleteAll
+GET     /status-lote/edit     controllers.PedidosCRUD.editStatusLote
+POST    /status-lote/edit     controllers.PedidosCRUD.doEditStatusLote()
+
+
+# JS Routes:
+DELETE  /pedido/:id          controllers.PedidosCRUD.delete(id)
+
+
+
+# Map static resources from the /public folder to the /assets URL path
+
+GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+#GET     /stylesheets/app.css       controllers.Assets.at(path="/public/stylesheets", file="app.css")
+#GET     /webjars/*file            controllers.WebJarAssets.at(file)
